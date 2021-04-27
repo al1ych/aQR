@@ -64,8 +64,8 @@
     }
 
     let scanner;
-    window.onload = function() {
-         scanner = new Instascan.Scanner(
+    window.onload = function () {
+        scanner = new Instascan.Scanner(
             {
                 video: document.getElementById('preview'),
             }
@@ -80,11 +80,13 @@
         Instascan.Camera.getCameras().then(cameras => {
             if (cameras.length > 0) {
                 scanner.start(cameras[0]);
-            } else {
-                console.error("No existe camer o dispositivo!");
+            }
+            else
+            {
+                alert('no video devices found!');
             }
         });
 
-    }
+    };
 </script>
 </html>
