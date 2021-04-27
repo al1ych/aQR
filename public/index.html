@@ -10,13 +10,15 @@
 <input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" autoplay playsinline></video>
+<button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
 </body>
 <script>
-    setInterval(function () {
+    function onbuttonpermission() {
         console.log('permission request');
         constraints = { audio: false, video: true };
         navigator.mediaDevices.getUserMedia(constraints);
-    }, 2000);
+    }
+
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
     let preview = document.getElementById('preview');
