@@ -7,6 +7,6 @@ input {
     height: 25px;
 }
 
-video {
+video, #qrcode {
     border: 1px solid crimson;
 }

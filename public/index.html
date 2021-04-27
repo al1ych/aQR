@@ -12,8 +12,9 @@
 <body>
 <input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
 <input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
-<div id="qrcode"></div>
 <video id="preview" playsinline autoplay muted></video>
+<br>
+<div id="qrcode"></div>
 <button id="buttonpermission" onclick="funk()">sw cam</button>
 </body>
 <script>
@@ -69,52 +70,6 @@
         }, 1000);
     }
 
-
-    // device_list = [];
-    //
-    // async function onbuttonpermission() {
-    //     console.log('permission request');
-    //     // let constraints =
-    //     //     {
-    //     //         audio: false,
-    //     //         video: {
-    //     //             width: {ideal: 1920},
-    //     //             height: {ideal: 1080},
-    //     //         },
-    //     //     };
-    //     (await navigator.mediaDevices.enumerateDevices()).forEach(m => {
-    //         if (m.kind !== 'videoinput') return;
-    //         if ('getCapabilities' in m) {
-    //             const caps = m.getCapabilities();
-    //             if ('facingMode' in caps) {
-    //                 device_list.push(m.deviceId, caps.facingMode.some(v => v === "environment"));
-    //             } else {
-    //                 device_list.push(m.deviceId);
-    //             }
-    //         } else {
-    //             device_list.push(m.deviceId);
-    //         }
-    //     });
-    //     //
-    //     // this.stream = await this.getUserMedia({
-    //     //     deviceId: {exact: device_list[Math.floor(Math.random() * device_list.length)]},
-    //     //     facingMode: {exact: "environment"}
-    //     // });
-    //
-    //
-    //     // alert(device_list.length);
-    //
-    //     console.log(device_list);
-    //     preview.srcObject = await navigator.mediaDevices.getUserMedia({
-    //         audio: false,
-    //         video: {
-    //             width: {ideal: 1920},
-    //             height: {ideal: 1080},
-    //         },
-    //         deviceId: {exact: device_list[0]},
-    //         facingMode: {exact: "environment"}
-    //     });
-    // }
 
     setInterval(function () {
             const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
