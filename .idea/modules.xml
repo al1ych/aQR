@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/antiQR.iml" filepath="$PROJECT_DIR$/.idea/antiQR.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../wayin/.idea/wayin.iml" filepath="$PROJECT_DIR$/../wayin/.idea/wayin.iml" />
     </modules>
   </component>
 </project>
