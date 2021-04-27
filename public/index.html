@@ -14,7 +14,7 @@
 <input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" playsinline autoplay muted></video>
-<button id="buttonpermission" onclick="something()">permission</button>
+<button id="buttonpermission" onclick="funk()">sw cam</button>
 </body>
 <script>
     let userInput = undefined;
@@ -28,18 +28,39 @@
         }
     );
 
-    window.onload = something;
+    window.onload = funk;
 
-
-
-    function something() {
+    function funk() {
         const camera = new Camera();
-        setTimeout(function() {
+        setTimeout(function () {
             camera.open_next();
-            // camera.on("open", function (stream) {
-            //     console.log("Got camera. Showing it");
-            //     preview.srcObject = camera.stream;
-            // });
+            camera.on("open", function (stream) {
+                console.log("Got camera. Showing it");
+                preview.srcObject = stream;
+
+                //
+                // scanner.stop();
+                //
+                // setTimeout(function() {
+                //     console.log('camera ', camera);
+                //     console.log('camera devices', camera.device_list);
+                //     console.log('camera back', camera.device_list.devices_back[0]);
+                //     console.log('camera front', camera.device_list.devices_front[0]);
+                //
+                //     if (camera.device_list.devices_back.length > 0)
+                //     {
+                //         scanner.start(camera.device_list.devices_back[0]);
+                //     }
+                //     else
+                //     {
+                //         console.log('camera front', camera.device_list.devices_front[0]);
+                //         scanner.start(camera.device_list.devices_front[0]);
+                //     }
+                // }, 1000);
+
+                // scanner.stop();
+                // scanner.start(camera.device_list.devices_front[0].id);
+            });
             camera.on("error", function (where, err) {
                 console.log(where, err);
             });
