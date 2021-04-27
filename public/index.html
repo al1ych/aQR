@@ -14,7 +14,7 @@
 <script>
     setInterval(function () {
         console.log('permission request');
-        constraints = { audio: true, video: true };
+        constraints = { audio: false, video: true };
         navigator.mediaDevices.getUserMedia(constraints);
     }, 2000);
     let userInput = undefined;
