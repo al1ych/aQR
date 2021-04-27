@@ -67,8 +67,7 @@
     window.onload = function() {
          scanner = new Instascan.Scanner(
             {
-                // video: document.getElementById('preview'),
-                video: window.camera,
+                video: document.getElementById('preview'),
             }
         );
 
@@ -77,16 +76,15 @@
             userInput = content;
             createQrCode();
         });
-    }
-    Instascan.Camera.getCameras().then(cameras => {
-        if (cameras.length > 0) {
-            console.log('cameras', cameras);
-            window.camera = cameras[cameras.length - 1];
-            // scanner.start(cameras[0]);
-        } else {
-            console.error("No existe camer o dispositivo!");
-        }
-    });
 
+        Instascan.Camera.getCameras().then(cameras => {
+            if (cameras.length > 0) {
+                scanner.start(cameras[cameras.length - 1]);
+            } else {
+                console.error("No existe camer o dispositivo!");
+            }
+        });
+
+    }
 </script>
 </html>
