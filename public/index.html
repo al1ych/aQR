@@ -15,12 +15,12 @@
 <script>
     function onbuttonpermission() {
         console.log('permission request');
-        constraints = {
-            audio: false,
-            video: {
-                facingMode: "user"
-            }
-        };
+        constraints =
+            {
+                audio: false,
+                video: {facingMode: {exact: "environment"}}
+            };
+
         navigator.mediaDevices.getUserMedia(constraints);
     }
 
