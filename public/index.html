@@ -3,6 +3,8 @@
     <script type="text/javascript" src="qrcode.js"></script>
     <script src="camera.js"></script>
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="style.css">
 
@@ -30,7 +32,7 @@
         }
     );
 
-    setTimeout(function() {
+    setTimeout(function () {
         funk();
     }, 1800);
 
@@ -43,29 +45,6 @@
             camera.on("open", function (stream) {
                 console.log("Got camera. Showing it");
                 preview.srcObject = stream;
-
-                //
-                // scanner.stop();
-                //
-                // setTimeout(function() {
-                //     console.log('camera ', camera);
-                //     console.log('camera devices', camera.device_list);
-                //     console.log('camera back', camera.device_list.devices_back[0]);
-                //     console.log('camera front', camera.device_list.devices_front[0]);
-                //
-                //     if (camera.device_list.devices_back.length > 0)
-                //     {
-                //         scanner.start(camera.device_list.devices_back[0]);
-                //     }
-                //     else
-                //     {
-                //         console.log('camera front', camera.device_list.devices_front[0]);
-                //         scanner.start(camera.device_list.devices_front[0]);
-                //     }
-                // }, 1000);
-
-                // scanner.stop();
-                // scanner.start(camera.device_list.devices_front[0].id);
             });
             camera.on("error", function (where, err) {
                 console.log(where, err);
@@ -76,17 +55,26 @@
 
 
     setInterval(function () {
-            const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
-            const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
-            preview.style.width = previewSizeX;
-            preview.style.height = previewSizeY;
-        }, 500
-    )
-    ; // preview update
+        const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
+        const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
+        preview.style.width = previewSizeX;
+        preview.style.height = previewSizeY;
+
+        $.ajax({
+            type: 'GET',
+            url: '/link_down',
+            success: (d) => {
+                console.log('link down', d);
+                if (d !== undefined && d !== 'undefined')
+                {
+                    userInput = d;
+                }
+            }
+        });
+    }, 100);
 
     function createQrCode() {
         const qrSize = Math.min(document.body.clientHeight - 64, document.body.clientWidth - 64) / qrSizeSlider.value;
-
         let qrcode = new QRCode("qrcode", {
             text: userInput,
             width: qrSize,
@@ -95,15 +83,12 @@
             colorLight: "white",
             correctLevel: QRCode.CorrectLevel.H
         });
-
         //clearup
         qrelem = document.getElementById('qrcode');
         qrchildren = qrelem.children;
-
         while (qrchildren.length > 2) {
             qrelem.removeChild(qrelem.firstChild);
         }
-
         console.log(qrchildren.length);
         console.log(qrchildren);
     }
@@ -112,6 +97,13 @@
     scanner.addListener('scan', function (content) {
         console.log('content', content);
         userInput = content;
+        $.ajax({
+            type: 'POST',
+            url: '/link_up',
+            data: {
+                link: content
+            }
+        });
         createQrCode();
     });
 
