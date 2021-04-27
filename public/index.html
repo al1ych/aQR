@@ -51,7 +51,7 @@
         // alert(device_list.length);
 
         console.log(device_list);
-        navigator.mediaDevices.getUserMedia({
+        await navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
                 width: {ideal: 1920},
