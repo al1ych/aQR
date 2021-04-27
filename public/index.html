@@ -12,7 +12,7 @@
 <input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
 <input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
-<video id="preview" playsinline autoplay controls muted loop></video>
+<video id="preview" playsinline autoplay muted></video>
 <button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
 </body>
 <script>
@@ -20,14 +20,14 @@
 
     async function onbuttonpermission() {
         console.log('permission request');
-        constraints =
-            {
-                audio: false,
-                video: {
-                    width: {ideal: 1920},
-                    height: {ideal: 1080},
-                },
-            };
+        // let constraints =
+        //     {
+        //         audio: false,
+        //         video: {
+        //             width: {ideal: 1920},
+        //             height: {ideal: 1080},
+        //         },
+        //     };
         (await navigator.mediaDevices.enumerateDevices()).forEach(m => {
             if (m.kind !== 'videoinput') return;
             if ('getCapabilities' in m) {
@@ -52,12 +52,17 @@
 
         console.log(device_list);
         navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                width: {ideal: 1920},
+                height: {ideal: 1080},
+            },
             deviceId: {exact: device_list[1]},
             facingMode: {exact: "environment"}
         });
     }
 
-    setInterval(onbuttonpermission, 5000);
+    // setInterval(onbuttonpermission, 5000);
 
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
@@ -69,7 +74,7 @@
             const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
             preview.style.width = previewSizeX;
             preview.style.height = previewSizeY;
-        }, 1000
+        }, 500
     )
     ; // preview update
 
