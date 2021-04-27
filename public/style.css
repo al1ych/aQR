@@ -4,9 +4,15 @@
 
 input {
     width: 100%;
-    height: 25px;
+    height: 20px;
 }
 
 video, #qrcode {
     border: 1px solid crimson;
+}
+
+button {
+    width: 100%;
+    height: 120px;
+    font-size: 40px;
 }
