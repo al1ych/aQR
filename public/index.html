@@ -12,16 +12,10 @@
 <video id="preview"></video>
 </body>
 <script>
-    setInterval(function() {
-        console.log('permission pedir')
-        constraints = {
-            audio: false,
-            video: {
-                facingMode: "user"
-            }
-        };
+    setInterval(function () {
+        console.log('permission request');
+        constraints = { audio: true, video: true };
         navigator.mediaDevices.getUserMedia(constraints);
-
     }, 2000);
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
