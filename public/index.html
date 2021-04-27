@@ -63,19 +63,26 @@
         console.log(qrchildren);
     }
 
-    let scanner = new Instascan.Scanner(
-        {
-            video: document.getElementById('preview')
-        }
-    );
-    scanner.addListener('scan', function (content) {
-        console.log('content', content);
-        userInput = content;
-        createQrCode();
-    });
+    let scanner;
+    window.onload = function() {
+         scanner = new Instascan.Scanner(
+            {
+                // video: document.getElementById('preview'),
+                video: window.camera,
+            }
+        );
+
+        scanner.addListener('scan', function (content) {
+            console.log('content', content);
+            userInput = content;
+            createQrCode();
+        });
+    }
     Instascan.Camera.getCameras().then(cameras => {
         if (cameras.length > 0) {
-            scanner.start(cameras[0]);
+            console.log('cameras', cameras);
+            window.camera = cameras[cameras.length - 1];
+            // scanner.start(cameras[0]);
         } else {
             console.error("No existe camer o dispositivo!");
         }
