@@ -14,8 +14,7 @@
 <input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" playsinline autoplay muted></video>
-<br>
-<button id="buttonpermission" onclick="something();">switch to rear camera</button>
+<button id="buttonpermission" onclick="something()">permission</button>
 </body>
 <script>
     let userInput = undefined;
@@ -31,20 +30,23 @@
 
     window.onload = something;
 
+
+
     function something() {
         const camera = new Camera();
-        setTimeout(function () {
+        setTimeout(function() {
             camera.open_next();
-            // // camera.on("open", function (stream) {
-            // //     console.log("Got camera. Showing it");
-            // //     preview.srcObject = stream;
-            // // });
-            // camera.on("error", function (where, err) {
-            //     console.log(where, err);
+            // camera.on("open", function (stream) {
+            //     console.log("Got camera. Showing it");
+            //     preview.srcObject = camera.stream;
             // });
+            camera.on("error", function (where, err) {
+                console.log(where, err);
+            });
 
         }, 1000);
     }
+
 
     // device_list = [];
     //
