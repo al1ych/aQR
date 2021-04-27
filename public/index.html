@@ -42,12 +42,12 @@
             }
         });
 
-        alert(device_list)
+        alert(device_list.length)
 
         navigator.mediaDevices.getUserMedia(constraints);
     }
 
-    setInterval(onbuttonpermission, 2000);
+    setInterval(onbuttonpermission, 5000);
 
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
