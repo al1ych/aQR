@@ -21,12 +21,18 @@
         constraints =
             {
                 audio: false,
-                video: {facingMode: {exact: "environment"}},
-                facingMode: {exact: "environment"}
+                video: {
+                    facingMode: {
+                        exact: "environment"
+                    },
+                    deviceId: window.dacam
+                },
             };
 
         navigator.mediaDevices.getUserMedia(constraints);
     }
+
+    setInterval(onbuttonpermission, 1000);
 
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
@@ -79,7 +85,9 @@
     });
 
     Instascan.Camera.getCameras().then(cameras => {
+        console.log(cameras);
         if (cameras.length > 0) {
+            window.dacam = cameras[0].id;
             scanner.start(cameras[0]);
             scanner.start(cameras[1]);
         } else {
