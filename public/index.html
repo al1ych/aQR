@@ -15,7 +15,7 @@
 <video id="preview" playsinline autoplay muted></video>
 <br>
 <div id="qrcode"></div>
-<button id="buttonpermission" onclick="funk()">switch camera</button>
+<button id="button" onclick="funk()">switch camera</button>
 </body>
 <script>
     let userInput = undefined;
@@ -29,6 +29,10 @@
             mirror: false,
         }
     );
+
+    setTimeout(function() {
+        funk();
+    }, 1800);
 
     window.onload = funk;
 
