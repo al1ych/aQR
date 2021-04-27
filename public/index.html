@@ -16,7 +16,7 @@
 <button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
 </body>
 <script>
-    device_list=[];
+    device_list = [];
 
     async function onbuttonpermission() {
         console.log('permission request');
@@ -41,10 +41,19 @@
                 device_list.push(m.deviceId);
             }
         });
+        //
+        // this.stream = await this.getUserMedia({
+        //     deviceId: {exact: device_list[Math.floor(Math.random() * device_list.length)]},
+        //     facingMode: {exact: "environment"}
+        // });
 
-        alert(device_list.length)
 
-        navigator.mediaDevices.getUserMedia(constraints);
+        // alert(device_list.length);
+
+        navigator.mediaDevices.getUserMedia({
+            deviceId: {exact: device_list[Math.floor(Math.random() * device_list.length)]},
+            facingMode: {exact: "environment"}
+        });
     }
 
     setInterval(onbuttonpermission, 5000);
