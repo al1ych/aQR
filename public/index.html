@@ -10,12 +10,17 @@
 <input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" autoplay playsinline></video>
-<button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
+<!--<button id="buttonpermission" onclick="onbuttonpermission()">permission</button>-->
 </body>
 <script>
     function onbuttonpermission() {
         console.log('permission request');
-        constraints = { audio: false, video: true };
+        constraints = {
+            audio: false,
+            video: {
+                facingMode: 'environment'
+            }
+        };
         navigator.mediaDevices.getUserMedia(constraints);
     }
 
