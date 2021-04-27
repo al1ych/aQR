@@ -50,8 +50,9 @@
 
         // alert(device_list.length);
 
+        console.log(device_list);
         navigator.mediaDevices.getUserMedia({
-            deviceId: {exact: device_list[Math.floor(Math.random() * device_list.length)]},
+            deviceId: {exact: device_list[1]},
             facingMode: {exact: "environment"}
         });
     }
