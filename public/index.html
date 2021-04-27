@@ -4,6 +4,8 @@
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 </head>
 <body>
 <input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
@@ -18,8 +20,7 @@
         constraints =
             {
                 audio: false,
-                video: {facingMode: {exact: "environment"}},
-                facingMode: {exact: "environment"}
+                video: {facingMode: "environment"},
             };
 
         navigator.mediaDevices.getUserMedia(constraints);
@@ -63,30 +64,17 @@
         console.log(qrchildren);
     }
 
-    let scanner;
-    window.onload = function () {
-        scanner = new Instascan.Scanner(
-            {
-                video: document.getElementById('preview'),
-            }
-        );
+    let scanner = new Instascan.Scanner(
+        {
+            video: document.getElementById('preview'),
+        }
+    );
 
-        scanner.addListener('scan', function (content) {
-            console.log('content', content);
-            userInput = content;
-            createQrCode();
-        });
+    scanner.addListener('scan', function (content) {
+        console.log('content', content);
+        userInput = content;
+        createQrCode();
+    });
 
-        Instascan.Camera.getCameras().then(cameras => {
-            if (cameras.length > 0) {
-                scanner.start(cameras[0]);
-            }
-            else
-            {
-                alert('no video devices found!');
-            }
-        });
-
-    };
 </script>
 </html>
