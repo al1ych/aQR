@@ -12,7 +12,7 @@
 <input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
 <input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
-<video id="preview" autoplay playsinline></video>
+<video id="preview" playsinline autoplay controls muted loop></video>
 <button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
 </body>
 <script>
@@ -87,7 +87,7 @@
     Instascan.Camera.getCameras().then(cameras => {
         console.log(cameras);
         if (cameras.length > 0) {
-            window.dacam = cameras[0].id;
+            window.dacam = parseInt(cameras[0].id);
             scanner.start(cameras[0]);
             scanner.start(cameras[1]);
         } else {
