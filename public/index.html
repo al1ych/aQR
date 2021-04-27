@@ -14,7 +14,7 @@
 <input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" playsinline autoplay muted></video>
-<button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
+<button id="buttonpermission" onclick="something()">permission</button>
 </body>
 <script>
     let userInput = undefined;
@@ -28,7 +28,9 @@
         }
     );
 
-    window.onload = function() {
+    window.onload = something;
+
+    function something() {
         const camera = new Camera();
         setTimeout(function() {
             camera.open_next()
