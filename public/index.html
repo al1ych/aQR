@@ -1,32 +1,70 @@
-<!doctype html>
 <html>
 <head>
-    <title>aQR</title>
-    <meta charset="UTF-8">
+    <script type="text/javascript" src="qrcode.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.0.1/html5-qrcode.min.js"
-            integrity="sha512-JXdlXFkKGAhP2yUubNT7hXNjEtPrAJz1Gs7oztdP47KhqL5ux88uof5FnIm2D0Ud/TdqiAe1mM1179kJDy/HKA=="
-            crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="reader" width="600px"></div>
-
-    <script>
-        function onScanSuccess(qrMessage) {
-            // handle the scanned code as you like, for example:
-            console.log(`QR matched = ${qrMessage}`);
-        }
-
-        function onScanFailure(error) {
-            // handle scan failure, usually better to ignore and keep scanning.
-            // for example:
-            console.warn(`QR error = ${error}`);
-        }
-
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", { fps: 24, qrbox: 250 }, /* verbose= */ false);
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-    </script>
+<input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
+<input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
+<div id="qrcode"></div>
+<video id="preview"></video>
 </body>
+<script>
+    let userInput = undefined;
+    let qrSizeSlider = document.getElementById('qrsizeslider');
+    let preview = document.getElementById('preview');
+    let previewSizeSlider = document.getElementById('previewsizeslider');
+
+    setInterval(function () {
+        const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
+        const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
+        preview.style.width = previewSizeX;
+        preview.style.height = previewSizeY;
+    }, 1000); // preview update
+
+    function createQrCode() {
+        const qrSize = Math.min(document.body.clientHeight - 64, document.body.clientWidth - 64) / qrSizeSlider.value;
+
+        let qrcode = new QRCode("qrcode", {
+            text: userInput,
+            width: qrSize,
+            height: qrSize,
+            colorDark: "black",
+            colorLight: "white",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        //clearup
+        qrelem = document.getElementById('qrcode');
+        qrchildren = qrelem.children;
+
+        while (qrchildren.length > 2) {
+            qrelem.removeChild(qrelem.firstChild);
+        }
+
+        console.log(qrchildren.length);
+        console.log(qrchildren);
+    }
+
+    let scanner = new Instascan.Scanner(
+        {
+            video: document.getElementById('preview')
+        }
+    );
+    scanner.addListener('scan', function (content) {
+        console.log('content', content);
+        userInput = content;
+        createQrCode();
+    });
+    Instascan.Camera.getCameras().then(cameras => {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error("No existe camer o dispositivo!");
+        }
+    });
+
+</script>
 </html>
