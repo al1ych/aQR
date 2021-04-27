@@ -14,7 +14,8 @@
 <input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" playsinline autoplay muted></video>
-<button id="buttonpermission" onclick="something()">permission</button>
+<br>
+<button id="buttonpermission" onclick="something(); setTimeout(something, 1000);">switch to rear camera</button>
 </body>
 <script>
     let userInput = undefined;
@@ -32,38 +33,15 @@
 
     function something() {
         const camera = new Camera();
-        setTimeout(function() {
-            camera.open_next()
-            camera.on("open", function (stream) {
-                console.log("Got camera. Showing it");
-                preview.srcObject = stream;
-
-                //
-                // scanner.stop();
-                //
-                // setTimeout(function() {
-                //     console.log('camera ', camera);
-                //     console.log('camera devices', camera.device_list);
-                //     console.log('camera back', camera.device_list.devices_back[0]);
-                //     console.log('camera front', camera.device_list.devices_front[0]);
-                //
-                //     if (camera.device_list.devices_back.length > 0)
-                //     {
-                //         scanner.start(camera.device_list.devices_back[0]);
-                //     }
-                //     else
-                //     {
-                //         console.log('camera front', camera.device_list.devices_front[0]);
-                //         scanner.start(camera.device_list.devices_front[0]);
-                //     }
-                // }, 1000);
-
-                // scanner.stop();
-                // scanner.start(camera.device_list.devices_front[0].id);
-            });
-            camera.on("error", function (where, err) {
-                console.log(where, err);
-            });
+        setTimeout(function () {
+            camera.open_next();
+            // // camera.on("open", function (stream) {
+            // //     console.log("Got camera. Showing it");
+            // //     preview.srcObject = stream;
+            // // });
+            // camera.on("error", function (where, err) {
+            //     console.log(where, err);
+            // });
 
         }, 1000);
     }
