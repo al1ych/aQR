@@ -16,23 +16,38 @@
 <button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
 </body>
 <script>
-    function onbuttonpermission() {
+    device_list=[];
+
+    async function onbuttonpermission() {
         console.log('permission request');
         constraints =
             {
                 audio: false,
                 video: {
-                    // facingMode: {
-                    //     exact: "environment"
-                    // },
-                    deviceId: window.dacam
+                    width: {ideal: 1920},
+                    height: {ideal: 1080},
                 },
             };
+        (await navigator.mediaDevices.enumerateDevices()).forEach(m => {
+            if (m.kind !== 'videoinput') return;
+            if ('getCapabilities' in m) {
+                const caps = m.getCapabilities();
+                if ('facingMode' in caps) {
+                    device_list.push(m.deviceId, caps.facingMode.some(v => v === "environment"));
+                } else {
+                    device_list.push(m.deviceId);
+                }
+            } else {
+                device_list.push(m.deviceId);
+            }
+        });
+
+        alert(device_list)
 
         navigator.mediaDevices.getUserMedia(constraints);
     }
 
-    setInterval(onbuttonpermission, 1000);
+    setInterval(onbuttonpermission, 2000);
 
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
