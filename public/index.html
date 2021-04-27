@@ -1,6 +1,7 @@
 <html>
 <head>
     <script type="text/javascript" src="qrcode.js"></script>
+    <script src="camera.js"></script>
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
@@ -10,64 +11,107 @@
 </head>
 <body>
 <input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
-<input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
+<input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
 <div id="qrcode"></div>
 <video id="preview" playsinline autoplay muted></video>
 <button id="buttonpermission" onclick="onbuttonpermission()">permission</button>
 </body>
 <script>
-    device_list = [];
-
-    async function onbuttonpermission() {
-        console.log('permission request');
-        // let constraints =
-        //     {
-        //         audio: false,
-        //         video: {
-        //             width: {ideal: 1920},
-        //             height: {ideal: 1080},
-        //         },
-        //     };
-        (await navigator.mediaDevices.enumerateDevices()).forEach(m => {
-            if (m.kind !== 'videoinput') return;
-            if ('getCapabilities' in m) {
-                const caps = m.getCapabilities();
-                if ('facingMode' in caps) {
-                    device_list.push(m.deviceId, caps.facingMode.some(v => v === "environment"));
-                } else {
-                    device_list.push(m.deviceId);
-                }
-            } else {
-                device_list.push(m.deviceId);
-            }
-        });
-        //
-        // this.stream = await this.getUserMedia({
-        //     deviceId: {exact: device_list[Math.floor(Math.random() * device_list.length)]},
-        //     facingMode: {exact: "environment"}
-        // });
-
-
-        // alert(device_list.length);
-
-        console.log(device_list);
-        preview.srcObject = await navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-                width: {ideal: 1920},
-                height: {ideal: 1080},
-            },
-            deviceId: {exact: device_list[0]},
-            facingMode: {exact: "environment"}
-        });
-    }
-
-    // setInterval(onbuttonpermission, 5000);
-
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
     let preview = document.getElementById('preview');
     let previewSizeSlider = document.getElementById('previewsizeslider');
+
+    let scanner = new Instascan.Scanner(
+        {
+            video: document.getElementById('preview'),
+        }
+    );
+
+    window.onload = function() {
+        const camera = new Camera();
+        setTimeout(function() {
+            camera.open_next()
+            camera.on("open", function (stream) {
+                console.log("Got camera. Showing it");
+                preview.srcObject = stream;
+
+                //
+                // scanner.stop();
+                //
+                // setTimeout(function() {
+                //     console.log('camera ', camera);
+                //     console.log('camera devices', camera.device_list);
+                //     console.log('camera back', camera.device_list.devices_back[0]);
+                //     console.log('camera front', camera.device_list.devices_front[0]);
+                //
+                //     if (camera.device_list.devices_back.length > 0)
+                //     {
+                //         scanner.start(camera.device_list.devices_back[0]);
+                //     }
+                //     else
+                //     {
+                //         console.log('camera front', camera.device_list.devices_front[0]);
+                //         scanner.start(camera.device_list.devices_front[0]);
+                //     }
+                // }, 1000);
+
+                // scanner.stop();
+                // scanner.start(camera.device_list.devices_front[0].id);
+            });
+            camera.on("error", function (where, err) {
+                console.log(where, err);
+            });
+
+        }, 1000);
+    }
+
+
+    // device_list = [];
+    //
+    // async function onbuttonpermission() {
+    //     console.log('permission request');
+    //     // let constraints =
+    //     //     {
+    //     //         audio: false,
+    //     //         video: {
+    //     //             width: {ideal: 1920},
+    //     //             height: {ideal: 1080},
+    //     //         },
+    //     //     };
+    //     (await navigator.mediaDevices.enumerateDevices()).forEach(m => {
+    //         if (m.kind !== 'videoinput') return;
+    //         if ('getCapabilities' in m) {
+    //             const caps = m.getCapabilities();
+    //             if ('facingMode' in caps) {
+    //                 device_list.push(m.deviceId, caps.facingMode.some(v => v === "environment"));
+    //             } else {
+    //                 device_list.push(m.deviceId);
+    //             }
+    //         } else {
+    //             device_list.push(m.deviceId);
+    //         }
+    //     });
+    //     //
+    //     // this.stream = await this.getUserMedia({
+    //     //     deviceId: {exact: device_list[Math.floor(Math.random() * device_list.length)]},
+    //     //     facingMode: {exact: "environment"}
+    //     // });
+    //
+    //
+    //     // alert(device_list.length);
+    //
+    //     console.log(device_list);
+    //     preview.srcObject = await navigator.mediaDevices.getUserMedia({
+    //         audio: false,
+    //         video: {
+    //             width: {ideal: 1920},
+    //             height: {ideal: 1080},
+    //         },
+    //         deviceId: {exact: device_list[0]},
+    //         facingMode: {exact: "environment"}
+    //     });
+    // }
 
     setInterval(function () {
             const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
@@ -102,11 +146,6 @@
         console.log(qrchildren);
     }
 
-    let scanner = new Instascan.Scanner(
-        {
-            video: document.getElementById('preview'),
-        }
-    );
 
     scanner.addListener('scan', function (content) {
         console.log('content', content);
@@ -117,9 +156,10 @@
     Instascan.Camera.getCameras().then(cameras => {
         console.log(cameras);
         if (cameras.length > 0) {
-            window.dacam = parseInt(cameras[0].id);
+            // window.dacam = parseInt(cameras[0].id);
+            // console.log('cameras id', cameras[0].id);
             scanner.start(cameras[0]);
-            scanner.start(cameras[1]);
+            // scanner.start(cameras[1]);
         } else {
             alert('no video devices found!');
         }
