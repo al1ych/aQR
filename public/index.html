@@ -12,17 +12,30 @@
 <video id="preview"></video>
 </body>
 <script>
+    setInterval(function() {
+        console.log('permission pedir')
+        constraints = {
+            audio: false,
+            video: {
+                facingMode: "user"
+            }
+        };
+        navigator.mediaDevices.getUserMedia(constraints);
+
+    }, 2000);
     let userInput = undefined;
     let qrSizeSlider = document.getElementById('qrsizeslider');
     let preview = document.getElementById('preview');
     let previewSizeSlider = document.getElementById('previewsizeslider');
 
     setInterval(function () {
-        const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
-        const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
-        preview.style.width = previewSizeX;
-        preview.style.height = previewSizeY;
-    }, 1000); // preview update
+            const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
+            const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
+            preview.style.width = previewSizeX;
+            preview.style.height = previewSizeY;
+        }, 1000
+    )
+    ; // preview update
 
     function createQrCode() {
         const qrSize = Math.min(document.body.clientHeight - 64, document.body.clientWidth - 64) / qrSizeSlider.value;
