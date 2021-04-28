@@ -59,20 +59,21 @@
         const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
         preview.style.width = previewSizeX;
         preview.style.height = previewSizeY;
+    }, 500);
 
-        $.ajax({
-            type: 'GET',
-            url: '/link_down',
-            success: (d) => {
-                console.log('link down', d);
-                if (d !== undefined && d !== 'undefined')
-                {
-                    userInput = d;
-                    createQrCode();
-                }
-            }
-        });
-    }, 15);
+
+    let trade = function (r) {
+        console.log('received', r);
+    };
+
+    const socket = io.connect('ws://localhost:1488', {transports: ['websocket']}); // local test
+    // const socket = io.connect('https://antiqr.herokuapp.com/', {transports: ['websocket']}); // deploy
+
+    socket.on('connect', () => {
+        console.log('connected to server, your socket id', socket.id);
+    });
+
+    socket.on('link', trade);
 
     function createQrCode() {
         const qrSize = Math.min(document.body.clientHeight - 64, document.body.clientWidth - 64) / qrSizeSlider.value;
