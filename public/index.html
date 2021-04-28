@@ -5,6 +5,7 @@
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.js"></script>
 
     <link rel="stylesheet" href="style.css">
 
@@ -53,7 +54,6 @@
         }, 1000);
     }
 
-
     setInterval(function () {
         const previewSizeX = (document.body.clientWidth - 64) / previewSizeSlider.value;
         const previewSizeY = (document.body.clientHeight - 64) / previewSizeSlider.value;
@@ -62,18 +62,18 @@
     }, 500);
 
 
-    let trade = function (r) {
-        console.log('received', r);
-    };
-
-    const socket = io.connect('ws://localhost:1488', {transports: ['websocket']}); // local test
+    console.log('initiating io');
+    const socket = io.connect();
     // const socket = io.connect('https://antiqr.herokuapp.com/', {transports: ['websocket']}); // deploy
 
     socket.on('connect', () => {
         console.log('connected to server, your socket id', socket.id);
     });
 
-    socket.on('link', trade);
+    socket.on('link', r => {
+        console.log('received', r);
+        createQrCode(r.link);
+    });
 
     function createQrCode() {
         const qrSize = Math.min(document.body.clientHeight - 64, document.body.clientWidth - 64) / qrSizeSlider.value;
@@ -91,26 +91,22 @@
         while (qrchildren.length > 2) {
             qrelem.removeChild(qrelem.firstChild);
         }
-        console.log(qrchildren.length);
-        console.log(qrchildren);
+        // console.log(qrchildren.length);
+        // console.log(qrchildren);
     }
 
 
     scanner.addListener('scan', function (content) {
         console.log('content', content);
         userInput = content;
-        $.ajax({
-            type: 'POST',
-            url: '/link_up',
-            data: {
-                link: content
-            }
+        socket.emit('link', {
+            link: content
         });
-        createQrCode();
+        // createQrCode();
     });
 
     Instascan.Camera.getCameras().then(cameras => {
-        console.log(cameras);
+        // console.log(cameras);
         if (cameras.length > 0) {
             // window.dacam = parseInt(cameras[0].id);
             // console.log('cameras id', cameras[0].id);

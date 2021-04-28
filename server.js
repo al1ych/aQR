@@ -2,7 +2,8 @@ const port = process.env.PORT || 1488;
 const express = require("express");
 const app = express();
 const path = require('path');
-app.use(express.urlencoded({extended: true, limit: '128mb'}));
+
+// app.use(express.urlencoded({extended: true, limit: '128mb'}));
 app.use(express.json({strict: false, limit: '128mb'}));
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -10,54 +11,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let current_link = 'undefined';
 
-let socket = require("socket.io");
 
-let io = socket(server);
-io.sockets.on('connection', new_con);
+let server = app.listen(port, () => {
+    console.log("Server started...");
+});
 
-function new_con(socket)
-{
+
+const { Server } = require("socket.io");
+const io = new Server(server);
+// let socket = require("socket.io");
+// let io = socket(server);
+io.sockets.on('connection', (socket) => {
     console.log('new connection:', socket.id);
-
-    socket.on('link', on_link);
-
-    function on_link(d)
-    {
-        // console.log('info received:', udata);
-        socket.emit('echo', 'echo');
-
-            socket.emit('link', {
-                nick: nick,
-                active: active[room],
-                timecode: timecode_shared[room],
-                player_state: player_state_shared[room],
-                player_type: player_type_shared[room],
-                video_id: video_id_shared[room] || "no_id",
-                there_is_king: there_is_king[room],
-                chat: chat[room] || "",
-                restrict: restrict[nick]
-            });
+    socket.on('link', d => {
+        console.log('info received:', d);
+        if (d['link'] !== 'undefined' &&
+            d['link'] !== undefined) {
+            current_link = d['link'];
         }
-        else
-        {
-            socket.emit('uinfo', {
-                nick: nick,
-                active: active[room] || {},
-                timecode: timecode,
-                player_state: local_player_state,
-                player_type: local_player_type,
-                video_id: local_video_id,
-                there_is_king: there_is_king[room] || false,
-                chat: chat[room] || "",
-                restrict: undefined
-            });
-        }
-
-        // set restrict for this user back to undefined
-        restrict[nick] = undefined;
-    }
-}
-
+        socket.emit('link', {
+            current_link: current_link,
+        });
+    });
+});
 
 // app.get('/test', (req, res) => {
 //     res.end('hello');
@@ -79,9 +55,3 @@ function new_con(socket)
 //     rs.end(current_link);
 // });
 
-
-
-
-let server = app.listen(port, () => {
-    console.log("Server started...");
-});
