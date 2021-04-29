@@ -18,7 +18,7 @@
 <video id="preview" playsinline autoplay muted></video>
 <br>
 <div id="qrcode"></div>
-<button id="button" onclick="funk()">switch camera</button>
+<button id="button" onclick="mediaRequets()">switch camera</button>
 </body>
 <script>
     let userInput = undefined;
@@ -34,12 +34,12 @@
     );
 
     setTimeout(function () {
-        funk();
+        mediaRequets();
     }, 1800);
 
-    window.onload = funk;
+    window.onload = mediaRequets;
 
-    function funk() {
+    function mediaRequets() {
         const camera = new Camera();
         setTimeout(function () {
             camera.open_next();
@@ -70,10 +70,12 @@
         console.log('connected to server, your socket id', socket.id);
     });
 
+
     socket.on('link', r => {
         console.log('received', r);
         createQrCode(r.link);
     });
+
 
     function createQrCode() {
         const qrSize = Math.min(document.body.clientHeight - 64, document.body.clientWidth - 64) / qrSizeSlider.value;
@@ -91,8 +93,6 @@
         while (qrchildren.length > 2) {
             qrelem.removeChild(qrelem.firstChild);
         }
-        // console.log(qrchildren.length);
-        // console.log(qrchildren);
     }
 
 
@@ -106,12 +106,8 @@
     });
 
     Instascan.Camera.getCameras().then(cameras => {
-        // console.log(cameras);
         if (cameras.length > 0) {
-            // window.dacam = parseInt(cameras[0].id);
-            // console.log('cameras id', cameras[0].id);
             scanner.start(cameras[0]);
-            // scanner.start(cameras[1]);
         } else {
             alert('no video devices found!');
         }
