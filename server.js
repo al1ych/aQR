@@ -32,7 +32,7 @@ let on_link = d => {
         d['link'] !== undefined) {
         current_link = d['link'];
     }
-    setInterval(_ => {
+    setTimeout(_ => {
         socket.emit('link', {
             current_link: current_link,
         });
