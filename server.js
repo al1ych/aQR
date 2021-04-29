@@ -17,7 +17,7 @@ let server = app.listen(port, () => {
 });
 
 
-const { Server } = require("socket.io");
+const {Server} = require("socket.io");
 const io = new Server(server);
 // let socket = require("socket.io");
 // let io = socket(server);
@@ -32,11 +32,9 @@ let on_link = d => {
         d['link'] !== undefined) {
         current_link = d['link'];
     }
-    setTimeout(_ => {
-        socket.emit('link', {
-            current_link: current_link,
-        });
-    }, 100);
+    socket.emit('link', {
+        current_link: current_link,
+    });
 };
 
 // app.get('/test', (req, res) => {
