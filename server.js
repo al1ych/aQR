@@ -23,19 +23,17 @@ const io = new Server(server);
 // let io = socket(server);
 io.sockets.on('connection', (socket) => {
     console.log('new connection:', socket.id);
-    socket.on('link', on_link);
-});
-
-let on_link = d => {
-    console.log('info received:', d);
-    if (d['link'] !== 'undefined' &&
-        d['link'] !== undefined) {
-        current_link = d['link'];
-    }
-    socket.emit('link', {
-        current_link: current_link,
+    socket.on('link', d => {
+        console.log('info received:', d);
+        if (d['link'] !== 'undefined' &&
+            d['link'] !== undefined) {
+            current_link = d['link'];
+        }
+        socket.emit('link', {
+            current_link: current_link,
+        });
     });
-};
+});
 
 // app.get('/test', (req, res) => {
 //     res.end('hello');
