@@ -73,7 +73,7 @@
 
     socket.on('link', r => {
         console.log('received', r);
-        createQrCode(r.link);
+        createQrCode(r.link.current_link);
     });
 
 
