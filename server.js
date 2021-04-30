@@ -19,22 +19,20 @@ let server = app.listen(port, () => {
 
 const {Server} = require("socket.io");
 const io = new Server(server);
-let qrVisited = {}
+let qrVisited = {};
 // let socket = require("socket.io");
 // let io = socket(server);
 io.sockets.on('connection', (socket) => {
     console.log('new connection:', socket.id);
-    socket.on('link', d => {
-        console.log('info received:', d);
-        if (d['link'] !== 'undefined' &&
-            d['link'] !== undefined &&
-            qrVisited[d['link']] !== true) {
-            current_link = d['link'];
-            qrVisited[current_link] = true;
+    socket.on('link', link => {
+        console.log('info received:', link);
+        if (link !== 'undefined' &&
+            link !== undefined &&
+            qrVisited[link] !== true) {
+            current_link = link;
+            qrVisited[link] = true;
         }
-        socket.emit('link', {
-            current_link: current_link,
-        });
+        socket.emit('link', current_link);
     });
 });
 
