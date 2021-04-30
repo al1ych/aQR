@@ -32,7 +32,8 @@ io.sockets.on('connection', (socket) => {
             current_link = link;
             qrVisited[link] = true;
         }
-        socket.emit('link', current_link);
+        socket.broadcast.emit('link', current_link);
+        // socket.emit('link', current_link);
     });
 });
 
