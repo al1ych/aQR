@@ -8,7 +8,7 @@ input {
 }
 
 video, #qrcode {
-    border: 1px solid crimson;
+    border: 1px dashed #e8e8e8;
 }
 
 button {

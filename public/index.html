@@ -19,6 +19,7 @@
 <br>
 <div id="qrcode"></div>
 <button id="button" onclick="mediaRequets()">switch camera</button>
+<input type="checkbox" id="autolink">
 </body>
 <script>
     let userInput = undefined;
@@ -74,6 +75,10 @@
     socket.on('link', r => {
         console.log('received', r);
         userInput = r;
+        autolink = document.getElementById("autolink").checked;
+        if (autolink) {
+            window.open(r, '_blank');
+        }
         createQrCode(r);
     });
 
