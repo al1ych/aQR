@@ -14,13 +14,19 @@
 </head>
 <body>
 <input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
-<input type="range" min="1" max="5" value="2" class="slider" id="previewsizeslider">
+<input type="range" min="1" max="5" value="4" class="slider" id="previewsizeslider">
 <!--<iframe src="https://baam.duckdns.org/s" width="1024" height="1024"></iframe><br>-->
 <video id="preview" playsinline autoplay muted></video>
 <br>
 <div id="qrcode"></div>
 <button id="button" onclick="mediaRequets()">switch camera</button>
-<input type="checkbox" id="autolink">
+<br>
+
+<input style="transform: scale(3);" type="checkbox" id="autolink">
+To baam:
+</input>
+<br>
+<input type="text" id="link_text" style="visibility: hidden">
 </body>
 <script>
     let userInput = undefined;
@@ -76,10 +82,6 @@
     socket.on('link', r => {
         console.log('received', r);
         userInput = r;
-        autolink = document.getElementById("autolink").checked;
-        if (autolink) {
-            window.open(r, '_blank');
-        }
         createQrCode(r);
     });
 
@@ -105,6 +107,11 @@
     scanner.addListener('scan', function (content) {
         console.log('content', content);
         userInput = content;
+        link_text.value = content;
+        autolink = document.getElementById("autolink").checked;
+        if (autolink) {
+            window.open(content, '_blank');
+        }
         socket.emit('link', content);
         createQrCode();
     });
