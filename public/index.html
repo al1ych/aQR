@@ -111,10 +111,10 @@
         console.log('content', content);
         userInput = content;
         link_text.value = content;
-        autolink = document.getElementById("autolink").checked;
-        if (autolink) {
-            window.open(content, '_blank');
-        }
+        //autolink = document.getElementById("autolink").checked;
+        //if (autolink) {
+        //    window.open(content, '_blank');
+        //}
         socket.emit('link', content);
         createQrCode();
     });
