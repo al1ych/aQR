@@ -12,21 +12,24 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 </head>
-<body>
-<input type="range" min="1" max="5" value="2" class="slider" id="qrsizeslider"><br>
-<input type="range" min="1" max="5" value="4" class="slider" id="previewsizeslider">
-<!--<iframe src="https://baam.duckdns.org/s" width="1024" height="1024"></iframe><br>-->
-<video id="preview" playsinline autoplay muted></video>
-<br>
-<div id="qrcode"></div>
-<button id="button" onclick="mediaRequets()">switch camera</button>
-<br>
+<body><!--<iframe src="https://baam.duckdns.org/s" width="1024" height="1024"></iframe><br>-->
+<div style="text-align: center;">
+    <video id="preview" playsinline autoplay muted></video>
+    <br>
+    <div id="qrcode"></div>
+    <button id="button" onclick="mediaRequets()">Switch camera</button>
+    <br>
 
-<input style="transform: scale(3);" type="checkbox" id="autolink">
-To baam:
-</input>
-<br>
-<input type="text" id="link_text" style="visibility: hidden">
+    <button onclick="toBaam()">Open BAAM</button>
+<!--    <input style="transform: scale(3);" type="checkbox" id="autolink">-->
+<!--    To baam:-->
+<!--    </input>-->
+    <br>
+    <input type="text" id="link_text" style="visibility: hidden">
+
+    <input type="range" min="1" max="5" value="5" class="slider" id="qrsizeslider"><br>
+    <input type="range" min="1" max="5" value="1" class="slider" id="previewsizeslider">
+</div>
 </body>
 <script>
     let userInput = undefined;
@@ -123,6 +126,10 @@ To baam:
             alert('no video devices found!');
         }
     });
+
+    function toBaam() {
+        window.open("https://baam.duckdns.org/s", '_blank');
+    }
 
 </script>
 </html>
