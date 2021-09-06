@@ -53,7 +53,9 @@
     function mediaRequets() {
         const camera = new Camera();
         setTimeout(function () {
-            camera.open_next();
+            var cnt = (Math.random() < 0.5 ? 1 : 2);
+            for (var t = 0; t < cnt; t++)
+                camera.open_next();
             camera.on("open", function (stream) {
                 console.log("Got camera. Showing it");
                 preview.srcObject = stream;
