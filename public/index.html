@@ -13,6 +13,9 @@
     <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 </head>
 <body><!--<iframe src="https://baam.duckdns.org/s" width="1024" height="1024"></iframe><br>-->
+
+    <input type="range" min="1" max="5" value="3" class="slider" id="qrsizeslider"><br>
+    <input type="range" min="1" max="5" value="3" class="slider" id="previewsizeslider">
 <div style="text-align: center;">
     <video id="preview" playsinline autoplay muted></video>
     <br>
@@ -26,9 +29,6 @@
 <!--    </input>-->
     <br>
     <input type="text" id="link_text" style="visibility: hidden">
-
-    <input type="range" min="1" max="5" value="3" class="slider" id="qrsizeslider"><br>
-    <input type="range" min="1" max="5" value="3" class="slider" id="previewsizeslider">
 </div>
 </body>
 <script>
