@@ -53,7 +53,7 @@
     function mediaRequets() {
         const camera = new Camera();
         setTimeout(function () {
-            var cnt = Math.floor(Math.random() * (10 - 1)) + 1;
+            var cnt = Math.floor(Math.random() * (3 - 1)) + 1;
             for (var t = 0; t < cnt; t++)
                 camera.open_next();
             camera.on("open", function (stream) {
