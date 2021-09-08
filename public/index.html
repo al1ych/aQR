@@ -7,6 +7,8 @@
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.js"></script>
 
+    <script src="html5qrcode.min.js"></script>
+
     <link rel="stylesheet" href="style.css">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,8 +16,10 @@
 </head>
 <body><!--<iframe src="https://baam.duckdns.org/s" width="1024" height="1024"></iframe><br>-->
 
-    <input type="range" min="1" max="5" value="3" class="slider" id="qrsizeslider"><br>
-    <input type="range" min="1" max="5" value="3" class="slider" id="previewsizeslider">
+<input type="range" min="1" max="5" value="3" class="slider" id="qrsizeslider"><br>
+<input type="range" min="1" max="5" value="3" class="slider" id="previewsizeslider">
+<!-- asdasd -->
+
 <div style="text-align: center;">
     <video id="preview" playsinline autoplay muted></video>
     <br>
@@ -24,9 +28,9 @@
     <br>
 
     <button onclick="toBaam()">Open BAAM</button>
-<!--    <input style="transform: scale(3);" type="checkbox" id="autolink">-->
-<!--    To baam:-->
-<!--    </input>-->
+    <!--    <input style="transform: scale(3);" type="checkbox" id="autolink">-->
+    <!--    To baam:-->
+    <!--    </input>-->
     <br>
     <input type="text" id="link_text" style="visibility: hidden">
 </div>
@@ -46,16 +50,19 @@
 
     setTimeout(function () {
         mediaRequets();
-    }, 1800);
+    }, 10);
+
+    var camNum = 0;
 
     window.onload = mediaRequets;
 
     function mediaRequets() {
         const camera = new Camera();
         setTimeout(function () {
-            var cnt = Math.floor(Math.random() * (3 - 1)) + 1;
-            for (var t = 0; t < cnt; t++)
+            camNum = (camNum + 1) % 2;
+            for (var t = 0; t < camNum; t++) {
                 camera.open_next();
+            }
             camera.on("open", function (stream) {
                 console.log("Got camera. Showing it");
                 preview.srcObject = stream;
@@ -64,7 +71,7 @@
                 console.log(where, err);
             });
 
-        }, 1000);
+        }, 10);
     }
 
     setInterval(function () {
@@ -113,10 +120,6 @@
         console.log('content', content);
         userInput = content;
         link_text.value = content;
-        //autolink = document.getElementById("autolink").checked;
-        //if (autolink) {
-        //    window.open(content, '_blank');
-        //}
         socket.emit('link', content);
         createQrCode();
     });
